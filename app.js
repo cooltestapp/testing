@@ -119,7 +119,7 @@ C.on("ready", a => {
 		  
 	}
 	// HERERGHUIYEFIUOYGHOOOOOOOOOOOOOOOOO?==========================
-	//require("./src/looper.js")(C);
+	require("./src/looper.js")(C);
 });
 
 
