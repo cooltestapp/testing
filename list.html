@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<style>
+:root {
+	--theme: #e61d2f;
+}
+body, html {
+	height: 100%;
+	background: #222;
+	color: #fff;
+	font-family: arial;
+}
+a {
+	color: #999;
+	transition: color .23s ease;
+	text-decoration: none;
+}
+a:hover {
+	color: var(--theme, #e61d2f);
+}
+h1, h2, h3, h4, h5, h6 {
+	word-wrap: break-word;
+}
+.main {
+	margin: 30px 0;
+	position: relative;
+	left: 50%;
+	transform: translate(calc(-70%));
+	max-width: 700px;
+	width: 100%;
+	flex-direction: column;
+	display: flex;
+}
+.list {
+	flex: 1;
+	padding: 10px;
+}
+.list-item {
+	border-bottom: solid 1px #333;
+	transition-property: transform, opacity;
+	transition-timing-function: ease-out, ease-in;
+	transition-duration: .39s, .28s;
+}
+.list-item.hidden {
+	opacity: 0;
+	transform: translateY(100px) translateX(-20px);
+	
+	
+}
+a:nth-child(even) .list-item.hidden {
+	transform: translateY(100px) translateX(20px);
+}
+.list-item.shown {
+	transform: translateY(0) translateX(0);
+	opacity: 1;
+}
+.list-title {
+	transition: color .23s ease-out;
+}
+
+
+
+@media only screen and (max-width: 1200px) {
+  .main {
+    transform: translate(calc(-50%));
+  }
+}
+@media only screen and (max-width: 700px) {
+  .main {
+    left: unset;
+    transform: none;
+  }
+}
+
+	</style>
+	<title>Frenzy-chan subscription list</title>
+</head>
+<body>
+
+<script>
+	window.anime = {
+		"cool anime": false,
+		"cool anime2": false,
+		"cool anime3": false,
+		"cool anime4": false,
+		"cool anime5": false,
+		"cool anime6": false,
+		"cool anime7": false,
+		"cool anime8": false,
+		"cool anime9": false,
+		"cool anime10": false,
+		"cool anime11": false,
+		"cool anime12": false,
+		"cool anime13": false,
+		"cool anime14": false,
+		"cool anime15": false,
+		"cool anime16": false,
+		"cool anime17": false,
+		"cool anime18": false,
+		"cool anime19": false,
+		"cool anime20": false,
+		"cool animeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee": false,
+	}
+	document.addEventListener('DOMContentLoaded', function(e) {
+
+		const h = Object.keys(window.anime).map(gen).join("");
+		document
+			.querySelector(".list")
+			.insertAdjacentHTML('afterbegin', h);
+
+	    function gen(a, i) {
+	    	let s = i * .07;
+		    return	'<a href="https://animefrenzy.net/?s=' + encodeURI(a) + '&ref=frenzychan">' +
+						'<div style="transition-delay:' +(s >2?2:s) + 's" class="list-item hidden" >' +
+							'<div class="list-item-inner">' +
+								'<div class="lsit-title">' +
+									'<h2>' + a + '</h2>' +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+					'</a>'
+	    }
+	    setTimeout(function() {
+	    	Array.from(document
+	    		.querySelectorAll(".hidden"))
+	    		.forEach(function(v, i) {
+	    			v.classList.add("shown");
+	    			v.classList.remove("hidden");
+	    		});
+	    }, 500);
+	});
+</script>
+
+
+<div class="main">
+	<h1>Your Frenzy-chan subscription list</h1>
+	<div class="list">
+		
+	</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "twist",
+  "version": "1.0.0",
+  "description": "Leach from Twist Anime",
+  "main": "main.js",
+  "keywords": [
+    "undo",
+    "anime",
+    "twistanime",
+    "anime"
+  ],
+  "author": "Undo",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "discord.js": "^11.4.2",
+    "flexsearch": "^0.6.30",
+    "html-entities": "^1.2.1",
+    "moment": "^2.24.0",
+    "npm": "^6.9.0",
+    "puppeteer": "^1.13.0",
+    "request": "^2.88.0",
+    "underscore": "^1.9.1"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}
