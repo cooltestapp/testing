@@ -3,7 +3,7 @@ const C = new D.Client();
 const https = require("request");
 const cheerio = require("cheerio");
 
-C.login("")
+C.login(process.env.TOKEN);
 
 
 const a = {
