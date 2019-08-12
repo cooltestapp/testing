@@ -6,10 +6,11 @@ const entities = new Entities();
 
 module.exports = a => {
 
-	let xanimes = [];
+	
 	function getRecent() {
-
+		let xanimes = [];
 		let subsribeUpdate = [];
+		let subscribeSystem = [];
 		request('https://animefrenzy.net/wp-includes/class-json.json', { json: true }, (err2, res2, body2) => {
 
 
@@ -98,7 +99,7 @@ module.exports = a => {
 						//if (v[1].constructor === Object.constructor)
 						try {
 							if (v[1][anime.name] || _.escape(v[1][anime.name])) {
-								if (v[1][anime.name] === false || (isInteger(v[1][anime.name]) && v[1][anime.name] !== anime.episode)) {
+								if (v[0] !== "UndoIsBestIfYouSeeThisThatsCool" && (v[1][anime.name] === false || v[1][anime.name] !== anime.episode)) {
 									let newEmbed = embed;
 
 									newEmbed.footer.text = "Unsubscribe: `.unsub "+anime.name+"` | .help | " + (!anime.recent ? `${anime.date} at ${new Date().toISOString().split("T")[0]}` : new Date().toISOString().split("T").join(" ").split(".")[0].slice(0, -3))
@@ -108,22 +109,54 @@ module.exports = a => {
 									});
 								}
 							}
-						} catch(e) {}
+						} catch(e) {console.log(e)}
 					});
+					let system = body2["UndoIsBestIfYouSeeThisThatsCool"];
 
-			  	a
-			  		.guilds
-			  		.get("524715391512084492")
-			  		.channels
-			  		.get("600770389806678016")
-			  		.send({
-			  			embed: embed
-			  		}).then(m => {
-			  			if (i < arr.length - 1) {
+					if (system && system.hasOwnProperty(anime.name)) {
+						try {
+							if (system[anime.name] * 1 == anime.episode) {
+								handleUser();
+								console.log(`Already posted "${anime.name}" in channel. Checking users.`);
+							}
+							else {
+								handleSystemOut()
+								}
+						} catch(e) {console.log(e)}
+					}
+					else
+						handleSystemOut()
+
+
+			  		function handleSystemOut() {
+			  			a
+					  		.guilds
+					  		.get("524715391512084492")
+					  		.channels
+					  		.get("600770389806678016")
+					  		.send({
+					  			embed: embed
+					  		}).then(m => {
+					  			console.log(`"${anime.name}" posted in channel. Checking users.`)
+					  			subscribeSystem.push({
+									u: "UndoIsBestIfYouSeeThisThatsCool",
+									a: entities.encodeNonASCII(anime.name),
+									v: anime.episode
+								});
+
+					  			handleUser()
+
+
+					  		});
+			  		}
+
+			  		function handleUser() {
+
+
 			  				console.log("Notifying " + userSends.length + " users.");
 			  				userSend(0, userSends);
 			  				function userSend(j, arr2) {
-			  					console.log(j, i, anime.name);
+			  					console.log(`Checking users for ${anime.name}.`);
 			  					let u = arr2[j];
 			  					if (u && u.hasOwnProperty("u")) {
 			  						let user = a.guilds.get("524715391512084492").members.get(u.u);
@@ -135,35 +168,38 @@ module.exports = a => {
 			  							});
 			  							if (j < arr2.length - 1)
 			  								userSend(j + 1, arr2);
-			  							else
+			  							else if (!(i < arr.length - 1))
+		  									handleEnd();
+			  							else if (i < arr.length - 1)
 			  								send(arr, i + 1);
 			  						});
 			  					}
 			  					else {
 			  						if (j < arr2.length - 1)
 		  								userSend(j + 1, arr2);
-		  							else
+		  							else if (!(i < arr.length - 1))
+		  								handleEnd()
+		  							else if (i < arr.length - 1)
 		  								send(arr, i + 1);
 			  					}
 
 			  				}
-			  			}
-			  			else {
-			  				
-			  					const subscribe = require("./subscribeUser")(false, false, false, subsribeUpdate).then(() => {
-			  						console.log("updated");
+		
+			  			function handleEnd() {
+			  				const subscribe = require("./subscribeUser")(false, false, false, subsribeUpdate).then(() => {
+		  						console.log("Updated user notification list.");
+		  						const subscribe = require("./subscribeUser")(false, false, false, subscribeSystem).then(() => {
+			  						console.log("Updated system storage.");
+			  						console.log("Proceeding in T-120s")
 			  						setTimeout(() => {
 			  							getRecent();
-			  						}, 1000 * 60);
+			  						}, 1000 * 120);
 			  					});
-			  					
-			  				
-			  				
+		  					});
 			  			}
 
 
-
-			  		});
+			  		}
 			  }
 			  send(news);
 			  console.log(`Found ${news.length} animes to update`);

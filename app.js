@@ -3,7 +3,7 @@ const C = new D.Client();
 const https = require("request");
 const cheerio = require("cheerio");
 
-C.login(process.env.TOKEN);
+C.login(process.env.TOKEN)
 
 
 const a = {
@@ -118,7 +118,6 @@ C.on("ready", a => {
 
 		  
 	}
-	// HERERGHUIYEFIUOYGHOOOOOOOOOOOOOOOOO?==========================
 	require("./src/looper.js")(C);
 });
 
