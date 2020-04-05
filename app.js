@@ -2,46 +2,58 @@ const D = require("discord.js");
 const C = new D.Client();
 const https = require("request");
 const cheerio = require("cheerio");
+const express = require("express");
+const app = express();
+const port = process.env.PORT || 1337;
 
-C.login(process.env.TOKEN)
+
+
+
+app.listen(port, () => {
+	console.log("Listening to port " + port);
+});
+
+
+
+C.login(process.env.TOKEN);
 
 
 const a = {
-	prefix: [".", "<@555414391378411530>%20", "<@555414391378411530>", "<@!555414391378411530>%20", "<@!555414391378411530>"],
+	prefix: [";", "<@555414391378411530>%20", "<@555414391378411530>", "<@!555414391378411530>%20", "<@!555414391378411530>"],
 	color: parseInt("0xE53232"),
 	commands: [
 		{
-			permissions: null,
+			permissions: "ADMINISTRATOR",
+			catagory: {name: "admin", emoji: "", sub: {}},
 			callback: "./src/embed.js",
 			name: ["embed", "e"],
-			description: ["Create embed"]
+			description: ["Create embed"],
+			usage: ""
 		},
 		{
 			permissions: null,
+			catagory: {name: "utility", emoji: "", sub: {}},
 			callback: "./src/searchCmd.js",
 			name: ["search", "searchanime"],
 			description: ["Search on AnimeFrenzy.net"]
 		},
 		{
 			permissions: null,
+			catagory: {name: "utility", emoji: "", sub: {}},
 			callback: "./src/anime.js",
 			name: ["anime", "a"],
 			description: ["Search anime"]
 		},
 		{
 			permissions: null,
-			callback: "./src/1ckle.js",
+			catagory: {name: "info", emoji: "", sub: {}},
+			callback: ["./src/1ckle.js"],
 			name: ["1ckle"],
-			description: ["lol"]
+			description: [""]
 		},
 		{
 			permissions: null,
-			callback: "./src/finisher.js",
-			name: ["fin", "finisher"],
-			description: ["lol"]
-		},
-		{
-			permissions: null,
+			catagory: {name: "info", emoji: "", sub: {}},
 			callback: "./src/website.js",
 			name: ["website", "site", "link"],
 			description: ["Display website url"]
@@ -49,47 +61,48 @@ const a = {
 		{
 			permissions: null,
 			callback: "./src/discord.js",
+			catagory: {name: "info", emoji: "", sub: {}},
 			name: ["discord", "d"],
 			description: ["Discord invite link"]
 		},
 		{
 			permissions: null,
 			callback: "./src/help.js",
+			catagory: {name: "info", emoji: "", sub: {}},
 			name: ["help", "h"],
 			description: ["Help menu."]
 		},
 		{
 			permissions: "ADMINISTRATOR",
+			catagory: {name: "utility", emoji: "", sub: {}},
 			callback: "./src/memberreport.js",
 			name: ["memberreport", "mr"],
 			description: ["Help menu."]
 		},
 		{
 			permissions: "ADMINISTRATOR",
+			catagory: {name: "utility", emoji: "", sub: {}},
 			callback: "./src/hyperlink.js",
 			name: ["hyperlink"],
 			description: ["Create hyper link, takes in name and message link."]
 		},
 		{
 			permissions: null,
-			callback: "./src/test.js",
-			name: ["lol"],
-			description: ["test"]
-		},
-		{
-			permissions: null,
+			catagory: {name: "utility", emoji: "", sub: {}},
 			callback: "./src/subscribe.js",
 			name: ["sub", "subscribe"],
 			description: [""]
 		},
 		{
 			permissions: null,
+			catagory: {name: "utility", emoji: "", sub: {}},
 			callback: "./src/unsubscribe.js",
 			name: ["unsub", "unsubscribe"],
 			description: [""]
 		},
 		{
 			permissions: null,
+			catagory: {name: "utility", emoji: "", sub: {}},
 			callback: "./src/sublist.js",
 			name: ["sublist", "list", "subribtionlist"],
 			description: [""]
@@ -118,7 +131,16 @@ C.on("ready", a => {
 
 		  
 	}
-	require("./src/looper.js")(C);
+	//equire("./src/looper.js")(C);
+
+	app.get('/af-members', (req, res) => res.send(JSON.stringify({
+		status: "success",
+		code: 200,
+		data: {
+			members: C.guilds.get("524715391512084492").memberCount
+		}
+	})));
+
 });
 
 
